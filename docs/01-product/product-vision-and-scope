@@ -1,0 +1,258 @@
+# Finanzas JAOS - Product Vision and Scope
+
+## 1. Product Overview
+
+Finanzas JAOS is a bilingual web application for personal financial management. It helps users organize their available money, expenses, credit cards, bank loans, personal loans, budgets, upcoming payments, and pending collections in one place.
+
+The application supports Spanish and English from the beginning. It detects the browser language automatically and allows the user to change it manually.
+
+## 2. Problem Statement
+
+Many personal finance applications focus only on recording expenses and income. They do not fully support real situations such as managing multiple bank accounts, linked wallets like Yape or Plin, credit card payment cycles, insurance charges, annual membership rules, bank loans, and money lent to other people.
+
+Spreadsheets can handle some of these needs, but they are usually difficult to update, not very visual, and do not provide useful alerts about important financial dates.
+
+## 3. Target Users
+
+Finanzas JAOS is designed for people who want to manage their personal finances in a detailed and organized way.
+
+Each user will have an independent account and will only be able to access their own financial information.
+
+## 4. Product Value Proposition
+
+Finanzas JAOS provides a centralized and understandable view of the user's financial situation.
+
+The application will help users:
+
+* Know how much money they have available.
+* Track expenses by shared categories, regardless of the payment method used.
+* Manage multiple bank accounts and payment methods.
+* Control credit card usage, available credit, payment dates, and closing dates.
+* Monitor bank loans and personal loans.
+* Know who owes them money and how much remains to be paid.
+* Configure monthly spending limits by category.
+* Receive alerts about upcoming payments, overdue debts, pending collections, and budget limits.
+
+## 5. Scope
+
+The first version of Finanzas JAOS will include:
+
+* Public user registration.
+* Email verification before using financial modules.
+* Login, logout, password recovery, and master key recovery.
+* Financial institutions and bank accounts.
+* Payment methods such as cash, debit cards, Yape, and Plin.
+* Credit card management.
+* Transactions, categories, budgets, and financial summaries.
+* Bank loan management.
+* Personal loan management.
+* Alerts and recommendations based on financial rules.
+* Spanish and English support.
+* Light and dark theme detection, with manual switching.
+
+## 6. Out of Scope
+
+The first version will not include:
+
+* Integration with real banks, Yape, Plin, or external financial providers.
+* Money transfers from the application.
+* Storage of PINs, CVV codes, bank passwords, banking tokens, or wallet passwords.
+* Financial advice provided by professionals.
+* Support for currencies other than Peruvian soles.
+* Native mobile applications.
+
+## 7. Core Modules
+
+### 7.1 Identity and Access Management
+
+This module manages public registration, email verification, login, password recovery, master key recovery, and user access control.
+
+Each financial resource must belong to one authenticated user. Users cannot access data created by another user.
+
+### 7.2 Financial Institutions and Accounts
+
+This module manages financial institutions and their bank accounts.
+
+A financial institution can have multiple accounts. For example, BCP can have a savings account and a salary account.
+
+Each account can store:
+
+* Display name.
+* Financial institution.
+* Account type.
+* Full account number.
+* Full CCI.
+* Current balance.
+* Status.
+
+### 7.3 Payment Methods
+
+This module manages the methods used to make payments or receive money.
+
+Supported payment methods include:
+
+* Cash.
+* Debit cards.
+* Yape.
+* Plin.
+
+Yape and Plin do not have independent balances. Each wallet must be linked to a bank account, and every transaction made through the wallet affects the balance of that linked account.
+
+A debit card can be linked to one or more accounts from the same financial institution only.
+
+### 7.4 Credit Card Management
+
+This module manages credit cards, purchases, payments, charges, available credit, closing dates, and payment dates.
+
+Each credit card can include:
+
+* Financial institution.
+* Card name.
+* Credit line.
+* Used balance.
+* Available balance.
+* Closing day.
+* Payment day.
+* Customer category.
+* Insurance rules.
+* Annual membership rules.
+
+Credit card purchases can be classified using the same global categories used by all financial transactions.
+
+### 7.5 Transactions and Budgets
+
+All financial movements will be registered as transactions.
+
+Supported transaction types include:
+
+* Income.
+* Expense.
+* Transfer between accounts.
+* Credit card payment.
+* Bank loan payment.
+* Personal loan disbursement.
+* Personal loan collection.
+* Credit card insurance charge.
+* Annual membership charge.
+
+Categories are global and shared by every payment method. For example, an expense categorized as Food will be included in the same Food summary whether it was paid with cash, Yape, debit card, or credit card.
+
+Users can configure monthly limits by category.
+
+### 7.6 Bank Loan Management
+
+This module manages loans received from financial institutions.
+
+A bank loan can deposit money into one bank account, while its installments can be paid from any available account.
+
+The module must track the total debt, installments, payment dates, remaining balance, and loan status.
+
+### 7.7 Personal Loan Management
+
+This module manages money lent by the user to family members, friends, or other people.
+
+A personal loan can be delivered from any user account and collected in any user account.
+
+It supports:
+
+* Partial payments.
+* Remaining balance calculation.
+* Due dates.
+* Manual interest.
+* Calculated interest.
+
+Manual interest allows the user to define a fixed amount that the borrower must return. Calculated interest allows the system to recalculate the pending amount based on configured rules.
+
+### 7.8 Alerts and Recommendations
+
+Alerts and recommendations are displayed only when a financial condition applies.
+
+Examples include:
+
+* A credit card payment is approaching.
+* A credit card closing date is approaching.
+* A bank loan installment is approaching.
+* A personal loan payment is overdue.
+* A spending category is close to its monthly limit.
+
+The number of days before an alert appears will be configurable by the user.
+
+## 8. Business Rules
+
+### 8.1 Currency and Date Rules
+
+* The initial currency is Peruvian soles (PEN).
+* The displayed symbol is S/.
+* The application uses the America/Lima time zone.
+* Dates are displayed using the dd/MM/yyyy format.
+
+### 8.2 Credit Card Insurance Rule
+
+A credit card can have an insurance rule based on the Daily Average Balance.
+
+For the initial Ripley configuration:
+
+* The system calculates the debt balance for every day in the billing cycle.
+* A positive balance in favor of the customer is treated as debt equal to S/ 0.00.
+* The daily debt balances are added and divided by the number of days in the billing cycle.
+* If the Daily Average Balance is S/ 10.00 or less, the insurance charge is S/ 0.00.
+* If the Daily Average Balance is greater than S/ 10.00, the system applies a monthly rate of 3.50%.
+* The result cannot exceed S/ 15.90.
+* The final amount is rounded to two decimal places.
+
+These values must be configurable for each credit card and must not be permanently fixed in the system.
+
+### 8.3 Credit Card Annual Membership Rule
+
+For the initial Ripley configuration:
+
+* Base annual membership amount: S/ 68.00.
+* Monthly minimum spending target: S/ 250.00.
+* Required compliant months: 12.
+* Gold customers are fully exempt.
+* Silver customers receive a 50% discount when they do not meet the spending condition.
+* Classic customers pay the full amount if they fail to meet the target in at least one required month.
+
+These values and conditions must be configurable for each credit card.
+
+### 8.4 Archive and Deletion Rule
+
+If an account or card has no associated transactions, it can be permanently deleted.
+
+If an account or card already has transactions, it cannot be permanently deleted. Instead, it must be archived or deactivated.
+
+Archived resources preserve historical information but cannot be used in new transactions.
+
+## 9. Security and Privacy
+
+The application will require login for every user.
+
+A master key is different from the login password and protects sensitive actions.
+
+The master key is required to:
+
+* View full account numbers.
+* View full CCI numbers.
+* View full debit or credit card numbers.
+* Edit sensitive account or card data.
+* Archive or delete bank accounts.
+* Archive or delete debit cards.
+* Archive or delete credit cards.
+
+After validating the master key, sensitive actions and full data are available for 90 seconds. The interface must display a visible countdown timer. When the timer reaches zero, sensitive data is hidden again and sensitive actions are locked.
+
+Sensitive data is masked by default. The application must never store CVV codes, PINs, banking passwords, wallet passwords, or security tokens.
+
+## 10. Technical and Experience Decisions
+
+* Frontend: Angular.
+* Backend: Spring Boot with Java.
+* Database: PostgreSQL.
+* API style: RESTful API.
+* Documentation format: Markdown and diagrams.
+* Source control: Git and GitHub.
+* Repository strategy: separate public repositories for frontend, backend, and documentation.
+* Frontend language support: Spanish and English from the beginning.
+* Initial language: detected from the browser.
+* Fallback language: Spanish.
+* Theme: detected from the system, with a manual switch stored locally in the browser.
